@@ -1,17 +1,16 @@
 FROM ubuntu:16.04
 MAINTAINER bsdev <bmsrox@gmail.com>
-RUN locale-gen en_US.UTF-8 && \
-    export LANG=en_US.UTF-8 && \
-    apt-get update && \
-    apt-get install -y software-properties-common && \
-    apt-get install -y language-pack-en-base && \
-    LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php && \
-    apt-get update && \
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y dist-upgrade && \
+    apt-get update --fix-missing && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install && \
     apt-get -y install apache2 libapache2-mod-php7.0 php7.0 php7.0-cli php-xdebug php7.0-mbstring php7.0-mysql php7.0-dev php7.0-gd php7.0-json php7.0-curl php7.0-intl php7.0-bcmath curl php-pear && \
     apt-get install -y git && \
     apt-get install -y vim && \
     apt-get install unzip && \
     a2enmod rewrite && \
+    a2enmod php7.0 && \
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php && \
